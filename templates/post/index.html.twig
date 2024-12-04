@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des posts{% endblock %}
+
+{% block body %}
+
+<div class="container">
+{# Equivalent de la boucle foreach en PHP for <élement courant> in <le tableau sur lequel on boucle> #}
+{% for post in allMyPosts %}
+    <h2>{{ post.title}}</h2>
+    <p>{{ post.content }}</p>
+    <a href="">Voir plus </a>
+{% endfor %}
+</div>
+{% endblock %}
