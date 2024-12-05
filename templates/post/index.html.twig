@@ -5,11 +5,10 @@
 {% block body %}
 
 <div class="container">
-{# Equivalent de la boucle foreach en PHP for <élement courant> in <le tableau sur lequel on boucle> #}
-{% for post in allMyPosts %}
-    <h2>{{ post.title}}</h2>
-    <p>{{ post.content }}</p>
-    <a href="{{path('app_details', {slug:post.slug} )}}">Voir plus </a>
-{% endfor %}
+
+{# On appelle le fichier partiel _card pour afficher la liste des posts  #}
+{% include 'components/_card.html.twig' %}
+
+    {{ knp_pagination_render(allMyPosts) }}
 </div>
 {% endblock %}
