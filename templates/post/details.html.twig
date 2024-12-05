@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des posts{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h2>{{ onePost.title}}</h2>
+    <p>{{ onePost.content }}</p>
+</div>
+{% endblock %}

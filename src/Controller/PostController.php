@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Posts;
 use App\Repository\PostsRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,7 +21,11 @@ class PostController extends AbstractController
     #[Route('/', name: 'app_posts')]
     public function index(): Response
     {
-        $posts = $this->postRepo->findAll();
+        // requête pour récupérer tous les posts publiés en utilisant la méthode findBy fournie par le repository
+        // $posts = $this->postRepo->findBy(['state'=>'STATE_PUBLISHED'], ['createdAt'=>'DESC']);
+
+        // requête pour récupérer tous les posts publiés en utilisant une méthode perso définie dans le repository
+        $posts = $this->postRepo->findPublished();
 
         return $this->render('post/index.html.twig', [
             'allMyPosts' => $posts,
@@ -28,14 +33,12 @@ class PostController extends AbstractController
     }
 
 
-    #[Route('/details', name: 'app_details')]
-    public function show(): Response
+    #[Route('/details/{slug}', name: 'app_details')]
+    // Ici on récupère un post particulier en passant associant l'id passé en param à une instance de posts ( entity) grace au parameter converter de symfony dans les param de la méthode show
+    public function show(Posts $post): Response
     {
-        $posts = $this->postRepo->findAll();
-        dd('page détails');
-
         return $this->render('post/details.html.twig', [
-            'allMyPosts' => $posts,
+            'onePost' => $post,
         ]);
     }
 }

@@ -3,14 +3,17 @@
 namespace App\Entity;
 
 
+use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PostsRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 #[ORM\Entity(repositoryClass: PostsRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['slug', 'title'], message: 'Ces champs doivent être uniques')]
 class Posts
 {
     const STATES = ['STATE_DRAFT', 'STATE_PUBLISHED'];
@@ -20,7 +23,7 @@ class Posts
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:'string', length: 255, unique:true)]
     #[Assert\NotBlank(message: 'Le titre est obligatoire')]
     private ?string $title = null;
 
@@ -35,6 +38,9 @@ class Posts
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(type:'string', length: 255, unique:true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -57,6 +63,7 @@ class Posts
     public function PrePersist(): void
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->slug = (new Slugify())->slugify($this->title);
     }
 
     public function getId(): ?int
@@ -120,6 +127,18 @@ class Posts
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
