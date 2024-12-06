@@ -44,4 +44,16 @@ class PostController extends AbstractController
             'onePost' => $post,
         ]);
     }
+
+
+    #[Route('/category/{id}', name: 'category_post')]
+
+    public function categPost(int $id): Response
+    {
+
+        $posts = $this->postRepo->findBy(['category'=> $id]);
+        return $this->render('post/categPost.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
 }

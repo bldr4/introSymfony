@@ -1,5 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
+    #  on défini une var globale twig, pour afficher la liste des categs dans le fichier base.html.twig ( qui n'est pas rattaché à un controller)
+    globals:
+        categories: '@App\Repository\CategoriesRepository'
+        # permet d'utiliser bootstrap pour styliser vos formulaires 
+    form_themes: ['bootstrap_5_layout.html.twig']
 
 when@test:
     twig:

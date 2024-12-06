@@ -16,6 +16,10 @@ class CategoriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Categories::class);
     }
 
+    public function getCategories(){
+        return $this->findAll();
+    }
+
     //    /**
     //     * @return Categories[] Returns an array of Categories objects
     //     */
